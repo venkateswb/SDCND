@@ -54,6 +54,10 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   float vy = x_state(3);
   MatrixXd Hj(3,4);
   // Special case
+  //Debugging
+  if(fabs(px) == 0 or fabs(py) == 0){
+  	cout << "m here at zero loop " << endl;
+  }
   if(fabs(px) < EPS and fabs(py) < EPS){
   	px = EPS;
   	py = EPS;
