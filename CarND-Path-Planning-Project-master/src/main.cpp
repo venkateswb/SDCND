@@ -290,7 +290,7 @@ int main() {
             }
 
             // Behavior : Let's see what to do.
-            double speed_dif = 0;
+            double speed_diff = 0;
             const double MAX_SPEED = 49.5;
             const double MAX_ACC = .224;
             if ( car_ahead ) { // Car ahead
@@ -301,7 +301,7 @@ int main() {
                 // if there is no car right and there is a right lane.
                 lane++; // Change lane right.
               } else {
-                speed_dif -= MAX_ACC;
+                speed_diff -= MAX_ACC;
               }
             } else {
               if ( lane != 1 ) { // if we are not on the center lane.
@@ -310,7 +310,7 @@ int main() {
                 }
               }
               if ( ref_velocity < MAX_SPEED ) {
-                speed_dif += MAX_ACC;
+                speed_diff += MAX_ACC;
               }
             }
 
@@ -390,7 +390,7 @@ int main() {
             double x_add_on = 0;
 
             for( int i = 1; i < 50 - prev_size; i++ ) {
-              ref_velocity += speed_dif;
+              ref_velocity += speed_diff;
               if ( ref_velocity > MAX_SPEED ) {
                 ref_velocity = MAX_SPEED;
               } else if ( ref_velocity < MAX_ACC ) {

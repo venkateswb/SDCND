@@ -110,14 +110,19 @@ This part of the code deal with the telemetry and sensor fusion data. It intents
 - Is there a car to the right of us making a lane change not safe.
 - Is there a car to the left of us making a lane change not safe.
 
-These questions are answered by calculating the lane each other car is and the position it will be at the end of the last plan trajectory. A car is considered "dangerous" when its distance to our car is less than 30 meters in front or behind us.
+First we look for the closest objects: the car just in front of the ego vehicle and the car just behind the ego vehicle for every lane; assuming a Field Of View of 30 meters, front and back (which is a configurable parameter). So this provides a sort of scene summary with at most 6 surrounding cars: as we are dealing with 3 lanes here. 
+Thanks to the sensor fusion information, a speed estimate is provided and used to compute the future positions of these (at most) 6 objects up to an horizon of typically 1 second. 
+
+These predictions will be used later on to check for potential collisions and safety distances and evaluate whether a lane is a good target or not e.g. depending on the presence and/or speed of cars in these lanes. 
+  
+ So we use here a pure model based approach for the predictions. This could be improved and should be improved later on especially when dealing with more complex environments like city traffic or crossing roads: as depicted in the picture below different potential tracks for every surrounding object could be estimated and associated with probabilities that would evolve as we get more evidences related to a specific maneuver. And here typically machine learning and deep learning techniques could be used: which can lead to using a combined data driven and model based approach to generate predictions and associated probabilities.
 
 ### Behavior [line 292 to line 314](./scr/main.cpp#L293)
 This part decides what to do:
   - If we have a car in front of us, do we change lanes?
   - Do we speed up or slow down?
 
-Based on the prediction of the situation we are in, this code increases the speed, decrease speed, or make a lane change when it is safe. Instead of increasing the speed at this part of the code, a `speed_dif` is created to be used for speed changes when generating the trajectory in the last part of the code. This approach makes the car more responsive acting faster to changing situations like a car in front of it trying to apply breaks to cause a collision.
+Based on the prediction of the situation we are in, this code increases the speed, decrease speed, or make a lane change when it is safe. Instead of increasing the speed at this part of the code, a `speed_diff` is created to be used for speed changes when generating the trajectory in the last part of the code. This approach makes the car more responsive acting faster to changing situations like a car in front of it trying to apply breaks to cause a collision.
 
 ### Trajectory [line 317 to line 416](./scr/main.cpp#L313)
 This code does the calculation of the trajectory based on the speed and lane output from the behavior, car coordinates and past path points.
