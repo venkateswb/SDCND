@@ -5,8 +5,8 @@ devel
 
 profile.tmp
 
-# raw bag files
-bags/
-# extracted image files
-bagimgs/
-data/camera_training
+*.swp
+/ros/src/styx/*.bak
+/ros/src/tl_detector/*.bak
+*.bag
+.DS_Store
